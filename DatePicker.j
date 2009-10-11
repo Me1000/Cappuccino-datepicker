@@ -131,6 +131,10 @@ CPLogRegister(CPLogConsole);
     if ([_delegate respondsToSelector:@selector(datePickerDidChange:)]){
         [defaultCenter addObserver:_delegate selector:@selector(datePickerDidChange:) name:"datePickerDidChangeNotification" object:self];
    	}
+   	
+   	if ([_delegate respondsToSelector:@selector(datePickerDidLoseFocus:)]){
+        [defaultCenter addObserver:_delegate selector:@selector(datePickerDidLoseFocus:) name:"datePickerDidLoseFocusNotification" object:self];
+   	}
 }
 
 //this method doesn't actually work... yet...
@@ -363,6 +367,7 @@ CPLogRegister(CPLogConsole);
 	//[[self window] sendEvent:anEvent]; //it doesn't work unless the event is sent twice... idk why.
 	[self setActiveDateSegment:nil];
 	//_dontsetfirsttome = NO;
+	[[CPNotificationCenter defaultCenter] postNotificationName:"datePickerDidLoseFocusNotification" object:superController userInfo:nil];
 	return YES;
 }
 
