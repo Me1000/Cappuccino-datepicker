@@ -45,6 +45,7 @@ CPLogRegister(CPLogConsole);
 	
 	//used from the input manager migrations
 	id activeDateSegment @accessors;
+    id prevActiveDateSegment @accessors;
 	id superController @accessors;
 	
 	BOOL _dontsetfirsttome;
@@ -365,6 +366,7 @@ CPLogRegister(CPLogConsole);
 //	console.log("resign");
 //	[[self window] selectNextKeyView:self];
 	//[[self window] sendEvent:anEvent]; //it doesn't work unless the event is sent twice... idk why.
+    [self setPrevActiveDateSegment:[self activeDateSegment]];
 	[self setActiveDateSegment:nil];
 	//_dontsetfirsttome = NO;
 	[[CPNotificationCenter defaultCenter] postNotificationName:"datePickerDidLoseFocusNotification" object:superController userInfo:nil];
@@ -555,8 +557,7 @@ CPLogRegister(CPLogConsole);
 
 - (void)keyDown:(id)anEvent
 {
-	[self interpretKeyEvents:anEvent];
-		
+	[self interpretKeyEvents:anEvent];		
 }
 
 -(void)interpretKeyEvents:(id)anEvent
@@ -639,6 +640,13 @@ CPLogRegister(CPLogConsole);
 
 - (void)stepperAction:(id)sender
 {
+    //if the stepper is clicked and the date picker isn't active make it active.
+    //if the date picker was previously selected then select that segment
+    //otherwise select the first one.
+    //FIX ME: the stepper needs to be clicked twice before the value changes.  
+    if(!activeDateSegment)
+		[self setActiveDateSegment:(prevActiveDateSegment) ? prevActiveDateSegment : [segments objectAtIndex:0]];
+
 		var newValue = [_theStepper intValue];
 		//[self setActiveDateSegment:[superController currentFocusedSegment]];
 		
