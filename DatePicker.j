@@ -960,6 +960,25 @@ CPLogRegister(CPLogConsole);
     }
 
 }
+
+- (CPString)description
+{
+    switch([self dateType])
+    {
+        case 1: return @"number month field";
+        case 2: return @"number day field";
+        case 3: return @"full number year field";
+        case 4: return @"short name month field";
+        case 5: return @"short year field";
+        case 6: return @"day of week short";
+        case 7: return @"day of week long";
+        case 8: return @"minutes field";
+        case 9: return @"hours field";
+        case 10: return @"am-pm field";
+        case 11: return @"seconds field";
+        default: return "date segment field";
+    }
+}
 @end
 
 @implementation DateSegment (filterData)
