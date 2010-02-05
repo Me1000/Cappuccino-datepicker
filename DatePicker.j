@@ -832,10 +832,13 @@ CPLogRegister(CPLogConsole);
 {
     [super setStringValue:aValue];
 
-    [[superController _theStepper] setDoubleValue:[self intValue]];
+    if ([inputManager activeDateSegment] === self)
+    {
+        [[superController _theStepper] setDoubleValue:[self intValue]];
 
-    if([self dateType] == 10 && [self stringValue] == @"PM"){
-        [[superController _theStepper] setDoubleValue:1];
+        if([self dateType] == 10 && [self stringValue] == @"PM"){
+            [[superController _theStepper] setDoubleValue:1];
+        }
     }
 }
 
